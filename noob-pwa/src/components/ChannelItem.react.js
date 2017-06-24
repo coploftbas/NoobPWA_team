@@ -34,8 +34,6 @@ class ChannelItem extends React.Component {
         // });
 
         fetchUserVideos(uid).then(allVideos => {
-            console.log(allVideos);
-
             // Get sum times from 10 most recent videos
             let videos = allVideos.videos;
             let arrayTimes = videos.map((eachVideo) => {
