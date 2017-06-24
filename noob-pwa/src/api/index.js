@@ -13,3 +13,15 @@ export function fetchTwitchChannel(userName) {
     });
     return fetch(`https://api.twitch.tv/kraken/users/${userName}`, { headers }).then(res => res.json());
 }
+
+
+// Fetch followers
+// will take only _total
+export function fetchUserFollow(userId) {
+    console.log(`[API fetchUserFollow] userId = ${userId}`);
+    let headers = new Headers({
+        "Accept": `application/vnd.twitchtv.v5+json`,
+        "Client-ID": `l4tlgzjwaa254v4e85h65pj2ojypgg`
+    });
+    return fetch(`https://api.twitch.tv/kraken/channels/${userId}/follows`, { headers }).then(res => res.json());
+}

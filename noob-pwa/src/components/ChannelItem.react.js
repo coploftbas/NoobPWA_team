@@ -1,11 +1,36 @@
 import React from 'react';
 
+import { fetchUserFollow } from '../api';
+
 class ChannelItem extends React.Component {
 
+    state = {
+        logo: '',
+        display_name: 'Loading ...',
+        bio: '',
+        followers: 0
+    }
+
+    componentDidMount() {
+        // console.log('ci did mounted');
+        // console.log(this.props.channelDetail._id);
+        fetchUserFollow(this.props.channelDetail._id).then(allFollowers => {
+            // let counter = allFollowers._total;
+            this.setState({
+                followers: allFollowers._total
+            })
+        });
+
+        const userBio = this.props.channelDetail.bio === null ? 'This user has no bio.' : this.props.channelDetail.bio;
+        this.setState({
+            logo: this.props.channelDetail.logo,
+            display_name: this.props.channelDetail.display_name,
+            bio: userBio,
+        });
+    }
+
     render() {
-        const {
-            logo, display_name, bio//, _id
-        } = this.props.channelDetail;
+        const { logo, display_name, bio, followers } = this.state;
 
         return (
             <div className="box">
@@ -41,19 +66,13 @@ class ChannelItem extends React.Component {
                     <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">Followers</p>
-                            <p className="title" href="">123</p>
+                            <p className="title" href="">{followers}</p>
                         </div>
                     </div>
                     <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">Subscribers</p>
                             <p className="title" href="">456</p>
-                        </div>
-                    </div>
-                    <div className="level-item has-text-centered">
-                        <div>
-                            <p className="heading">Avg. play time</p>
-                            <p className="title" href="">2 hrs/day</p>
                         </div>
                     </div>
                 </nav>
