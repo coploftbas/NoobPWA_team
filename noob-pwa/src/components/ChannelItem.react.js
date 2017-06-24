@@ -3,9 +3,8 @@ import React from 'react';
 class ChannelItem extends React.Component {
 
     render() {
-
         const {
-            logo, display_name, bio, _id
+            logo, display_name, bio//, _id
         } = this.props.channelDetail;
 
         return (

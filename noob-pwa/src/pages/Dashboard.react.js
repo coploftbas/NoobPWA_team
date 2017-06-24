@@ -11,10 +11,10 @@ class Dashboard extends React.Component {
         allChannel: []
     }
 
-    componentDidMount() {
-        this.addChannel('cigarettestv');
-        this.addChannel('mithjinny');
-    }
+    // componentDidMount() {
+    //     this.addChannel('cigarettestv');
+    //     this.addChannel('mithjinny');
+    // }
 
     addChannel(channelName) {
         fetchTwitchChannel(channelName)
@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
         const tmpAllChannel = this.state.allChannel;
         return (
             <div>
-                <NewChannelForm />
+                <NewChannelForm onClick={(channelName) => this.addChannel(channelName)} />
                 <hr />
                 <ChannelList allChannel={tmpAllChannel} />
             </div>

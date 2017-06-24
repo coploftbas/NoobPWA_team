@@ -6,9 +6,10 @@ class ChannelList extends React.Component {
 
     render() {
         console.log(this.props.allChannel);
-
-        const renderAllChannel = this.props.allChannel.map( eachChannel =>
-            { return <ChannelItem channelDetail={eachChannel} key={eachChannel.name}/> }
+        const renderAllChannel = this.props.allChannel
+            .reverse()
+            .map( eachChannel =>
+                { return <ChannelItem channelDetail={eachChannel} key={eachChannel.name}/> }
         );
 
         return (
