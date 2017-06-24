@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fetchUserFollow } from '../api';
+import { fetchUserFollowers/*, fetchUserSubscribers*/, fetchUserVideos } from '../api';
 
 class ChannelItem extends React.Component {
 
@@ -8,17 +8,53 @@ class ChannelItem extends React.Component {
         logo: '',
         display_name: 'Loading ...',
         bio: '',
-        followers: 0
+        followers: 0,
+        subscribers: 0,
+        videos: 0,
+        sumPlayedTime: 0,
+        playedGames: []
     }
 
     componentDidMount() {
-        // console.log('ci did mounted');
-        // console.log(this.props.channelDetail._id);
-        fetchUserFollow(this.props.channelDetail._id).then(allFollowers => {
-            // let counter = allFollowers._total;
+        const uid = this.props.channelDetail._id;
+
+        // fetch amount of followers
+        fetchUserFollowers(uid).then(allFollowers => {
             this.setState({
                 followers: allFollowers._total
             })
+        });
+
+        // fetch amount of subscribers
+        // fetchUserSubscribers(uid).then(allSubscribers => {
+        //     console.log(allSubscribers);
+        //     this.setState({
+        //         subscribers: allSubscribers._total
+        //     })
+        // });
+
+        fetchUserVideos(uid).then(allVideos => {
+            console.log(allVideos);
+
+            // Get sum times from 10 most recent videos
+            let videos = allVideos.videos;
+            let arrayTimes = videos.map((eachVideo) => {
+                return eachVideo.length;
+            });
+            let sumTimes = arrayTimes.reduce((a, b) => { return a + b; });
+
+            // Get all games from 10 most recent videos
+            let arrayGames = videos.map((eachVideo) => {
+                return eachVideo.game;
+            });
+            let playedGames = arrayGames.filter((x, i, a) => a.indexOf(x) === i);
+            // console.log(playedGames);
+
+            this.setState({
+                videos: allVideos._total,
+                sumPlayedTime: sumTimes,
+                playedGames: playedGames
+            });
         });
 
         const userBio = this.props.channelDetail.bio === null ? 'This user has no bio.' : this.props.channelDetail.bio;
@@ -29,8 +65,23 @@ class ChannelItem extends React.Component {
         });
     }
 
+    toHHMMSS(val) {
+        var sec_num = parseInt(val, 10); // don't forget the second param
+        var hours = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+        if (hours < 10) { hours = "0" + hours; }
+        if (minutes < 10) { minutes = "0" + minutes; }
+        if (seconds < 10) { seconds = "0" + seconds; }
+        return hours + 'h ' + minutes + 'm ' + seconds + 's';
+    }
+
     render() {
-        const { logo, display_name, bio, followers } = this.state;
+        const { logo, display_name, bio, followers, subscribers, videos, sumPlayedTime } = this.state;
+        const renderGamePlayed = this.state.playedGames.map((gameName, i) => {
+            return <p className="subtitle" href="" key={gameName}>{i+1}. {gameName}</p>;
+        });
 
         return (
             <div className="box">
@@ -56,12 +107,6 @@ class ChannelItem extends React.Component {
 
                 <hr />
 
-                <div className="media-content">
-                    <div className="content has-text-centered">
-                        <p className="subtitle"><strong>Channel's Details</strong></p>
-                        <p className="subtitle"></p>
-                    </div>
-                </div>
                 <nav className="level is-mobile">
                     <div className="level-item has-text-centered">
                         <div>
@@ -72,7 +117,21 @@ class ChannelItem extends React.Component {
                     <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">Subscribers</p>
-                            <p className="title" href="">456</p>
+                            <p className="title" href="">{subscribers}</p>
+                        </div>
+                    </div>
+                    <div className="level-item has-text-centered">
+                        <div>
+                            <p className="heading">Videos</p>
+                            <p className="title" href="">{videos}</p>
+                        </div>
+                    </div>
+                </nav>
+                <nav className="level is-mobile">
+                    <div className="level-item has-text-centered">
+                        <div>
+                            <p className="heading">Avegage Played Time</p>
+                            <p className="title" href="">{this.toHHMMSS(Math.round(sumPlayedTime/10))}</p>
                         </div>
                     </div>
                 </nav>
@@ -81,10 +140,8 @@ class ChannelItem extends React.Component {
 
                 <div className="media-content">
                     <div className="content has-text-centered">
-                        <p className="subtitle"><strong>Most Played Games</strong></p>
-                        <p className="subtitle" href="">1. Counter-Strike: Global Offensive</p>
-                        <p className="subtitle" href="">2. PLAYERUNKNOWN'S BATTLEGROUNDS</p>
-                        <p className="subtitle" href="">3. Overwatch</p>
+                        <p className="subtitle"><strong>Recent Played Games</strong></p>
+                        {renderGamePlayed}
                     </div>
                 </div>
 
