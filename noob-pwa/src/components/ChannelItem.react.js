@@ -1,24 +1,30 @@
 import React from 'react';
 
 class ChannelItem extends React.Component {
+
     render() {
+
+        const {
+            logo, display_name, bio, _id
+        } = this.props.channelDetail;
+
         return (
             <div className="box">
                 <article className="media">
                     <div className="media-left">
                         <figure className="image is-64x64">
-                            <img alt="" src="https://static-cdn.jtvnw.net/jtv_user_pictures/mithjinny-profile_image-86092d7c9d96d377-600x600.jpeg" />
+                            <img alt="" src={logo} />
                         </figure>
                     </div>
                     <div className="media-content">
                         <div className="content">
                             <p>
                                 <strong><a className="title" href="">
-                                    MiTHJinNy
+                                    {display_name}
                                 </a></strong>
                             </p>
                             <p className="subtitle">
-                                This user has no bio.
+                                {bio}
                             </p>
                         </div>
                     </div>
