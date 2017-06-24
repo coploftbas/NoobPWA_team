@@ -40,6 +40,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#ffffff", // #6441A5 - Twitch color
+  "theme_color": "#ffffff", // #483075 - Twitch color
   "background_color": "#ffffff"
 }
