@@ -4,7 +4,6 @@ import {
     fetchUserFollowers,
     fetchUserVideos,
     fetchUserBadges,
-    //fetchUserEmotes
 } from '../api';
 
 class ChannelItem extends React.Component {
@@ -39,7 +38,6 @@ class ChannelItem extends React.Component {
                 videos: allVideos._total,
             });
 
-            // console.log(videos);
             let arrayTimes = videos.map((eachVideo) => {
                 return eachVideo.length;
             });
@@ -62,8 +60,6 @@ class ChannelItem extends React.Component {
 
         // Get subscriber's badge
         fetchUserBadges(uid).then(allBadges => {
-            // console.log(allBadges.badge_sets.hasOwnProperty('subscriber'));
-
             if (allBadges.badge_sets.hasOwnProperty('subscriber')) {
                 this.setState({
                     badges: allBadges.badge_sets.subscriber.versions
@@ -71,11 +67,7 @@ class ChannelItem extends React.Component {
             }
         });
 
-        // fetchUserEmotes(uid).then(allEmotes => {
-        //     console.log(allEmotes);
-        // });
-
-
+        // Get user's details
         const userBio = this.props.channelDetail.bio === null ? 'This user has no bio.' : this.props.channelDetail.bio;
         this.setState({
             logo: this.props.channelDetail.logo,
@@ -84,8 +76,9 @@ class ChannelItem extends React.Component {
         });
     }
 
+    // function for translating second -> HHMMSS format
     toHHMMSS(val) {
-        var sec_num = parseInt(val, 10); // don't forget the second param
+        var sec_num = parseInt(val, 10);
         var hours = Math.floor(sec_num / 3600);
         var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
         var seconds = sec_num - (hours * 3600) - (minutes * 60);
@@ -200,26 +193,6 @@ class ChannelItem extends React.Component {
                         </div>
                     </div>}
                 </nav>}
-
-                <hr />
-
-                <div className="media-content">
-                    <div className="content has-text-centered">
-                        <p className="subtitle"><strong>Subscriber's Emotes</strong></p>
-                        <p className="subtitle"></p>
-                    </div>
-                </div>
-                <nav className="level is-mobile">
-                    <div className="level-item has-text-centered">
-                        <div>
-                            <img src="https://static-cdn.jtvnw.net/emoticons/v1/195473/1.0" alt="" />
-                            <img src="https://static-cdn.jtvnw.net/emoticons/v1/195473/1.0" alt="" />
-                            <img src="https://static-cdn.jtvnw.net/emoticons/v1/195473/1.0" alt="" />
-                            <img src="https://static-cdn.jtvnw.net/emoticons/v1/195473/1.0" alt="" />
-                            <img src="https://static-cdn.jtvnw.net/emoticons/v1/195473/1.0" alt="" />
-                        </div>
-                    </div>
-                </nav>
             </div>
         );
     }

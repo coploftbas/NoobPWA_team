@@ -6,10 +6,6 @@ class NewChannelForm extends React.Component {
         userInput: ''
     }
 
-    // handleChange(k) {
-    //     this.setState({ userInput: k });
-    // }
-
     handleClickAdd() {
         // GET value from input
         // send to function received via props
@@ -18,8 +14,6 @@ class NewChannelForm extends React.Component {
     }
 
     render() {
-        // console.log(this.state.userInput);
-
         return (
             <div className="section">
                 <div className="content">
@@ -30,7 +24,7 @@ class NewChannelForm extends React.Component {
                         <p className="control is-expanded">
                             <input
                                 className="input is-medium"
-                                type="channelName" /*type="text"*/
+                                type="text"
                                 value={this.state.userInput}
                                 onChange={ (event) => this.setState({ userInput: event.target.value }) }
                                 placeholder="eg. FPSThailand, HRKChannel etc." />

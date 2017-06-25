@@ -5,7 +5,6 @@ import ChannelItem from './ChannelItem.react';
 class ChannelList extends React.Component {
 
     render() {
-        console.log(this.props.allChannel);
         const renderAllChannel = this.props.allChannel
             .reverse()
             .map( eachChannel =>

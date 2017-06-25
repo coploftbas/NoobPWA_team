@@ -50,14 +50,3 @@ export function fetchUserBadges(channelId) {
 
     return fetch(`https://badges.twitch.tv/v1/badges/channels/${channelId}/display`, { headers }).then(res => res.json());
 }
-
-// // Fetch subscriber emoticons
-// export function fetchUserEmotes(channelId) {
-//     console.log(`[API fetchUserEmotes] channelId = ${channelId}`);
-//     let headers = new Headers({
-//         "Accept": `application/vnd.twitchtv.v5+json`,
-//         "Client-ID": `l4tlgzjwaa254v4e85h65pj2ojypgg`
-//     });
-
-//     return fetch(`https://api.twitch.tv/kraken/chat/${channelId}/emoticons`, { headers }).then(res => res.json());
-// }
