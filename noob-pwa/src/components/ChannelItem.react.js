@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { fetchUserFollowers/*, fetchUserSubscribers*/, fetchUserVideos } from '../api';
+import {
+    fetchUserFollowers,
+    fetchUserVideos,
+    fetchUserBadges
+} from '../api';
 
 class ChannelItem extends React.Component {
 
@@ -9,10 +13,10 @@ class ChannelItem extends React.Component {
         display_name: 'Loading ...',
         bio: '',
         followers: 0,
-        subscribers: 0,
         videos: 0,
         sumPlayedTime: 0,
-        playedGames: []
+        playedGames: [],
+        badges: null
     }
 
     componentDidMount() {
@@ -25,35 +29,47 @@ class ChannelItem extends React.Component {
             })
         });
 
-        // fetch amount of subscribers
-        // fetchUserSubscribers(uid).then(allSubscribers => {
-        //     console.log(allSubscribers);
-        //     this.setState({
-        //         subscribers: allSubscribers._total
-        //     })
-        // });
-
+        // fetch amount of videos, avg. play time, and games played
         fetchUserVideos(uid).then(allVideos => {
             // Get sum times from 10 most recent videos
             let videos = allVideos.videos;
-            let arrayTimes = videos.map((eachVideo) => {
-                return eachVideo.length;
-            });
-            let sumTimes = arrayTimes.reduce((a, b) => { return a + b; });
-
-            // Get all games from 10 most recent videos
-            let arrayGames = videos.map((eachVideo) => {
-                return eachVideo.game;
-            });
-            let playedGames = arrayGames.filter((x, i, a) => a.indexOf(x) === i);
-            // console.log(playedGames);
 
             this.setState({
                 videos: allVideos._total,
-                sumPlayedTime: sumTimes,
-                playedGames: playedGames
             });
+
+            // console.log(videos);
+            let arrayTimes = videos.map((eachVideo) => {
+                return eachVideo.length;
+            });
+
+            if (arrayTimes.length > 0) {
+                let sumTimes = arrayTimes.reduce((a, b) => { return a + b; });
+
+                // Get all games from 10 most recent videos
+                let arrayGames = videos.map((eachVideo) => {
+                    return eachVideo.game;
+                });
+                let playedGames = arrayGames.filter((x, i, a) => a.indexOf(x) === i);
+                
+                this.setState({
+                    sumPlayedTime: sumTimes,
+                    playedGames: playedGames
+                });
+            }
         });
+
+        // Get subscriber's badge
+        fetchUserBadges(uid).then(allBadges => {
+            // console.log(allBadges.badge_sets.hasOwnProperty('subscriber'));
+
+            if (allBadges.badge_sets.hasOwnProperty('subscriber')) {
+                this.setState({
+                    badges: allBadges.badge_sets.subscriber.versions
+                });
+            }
+        });
+
 
         const userBio = this.props.channelDetail.bio === null ? 'This user has no bio.' : this.props.channelDetail.bio;
         this.setState({
@@ -76,9 +92,9 @@ class ChannelItem extends React.Component {
     }
 
     render() {
-        const { logo, display_name, bio, followers, subscribers, videos, sumPlayedTime } = this.state;
+        const { logo, display_name, bio, followers, videos, sumPlayedTime, badges } = this.state;
         const renderGamePlayed = this.state.playedGames.map((gameName, i) => {
-            return <p className="subtitle" href="" key={gameName}>{i+1}. {gameName}</p>;
+            return <p className="subtitle" href="" key={gameName}>{i + 1}. {gameName}</p>;
         });
 
         return (
@@ -114,12 +130,6 @@ class ChannelItem extends React.Component {
                     </div>
                     <div className="level-item has-text-centered">
                         <div>
-                            <p className="heading">Subscribers</p>
-                            <p className="title" href="">{subscribers}</p>
-                        </div>
-                    </div>
-                    <div className="level-item has-text-centered">
-                        <div>
                             <p className="heading">Videos</p>
                             <p className="title" href="">{videos}</p>
                         </div>
@@ -128,8 +138,8 @@ class ChannelItem extends React.Component {
                 <nav className="level is-mobile">
                     <div className="level-item has-text-centered">
                         <div>
-                            <p className="heading">Avegage Played Time</p>
-                            <p className="title" href="">{this.toHHMMSS(Math.round(sumPlayedTime/10))}</p>
+                            <p className="heading">Average Played Time</p>
+                            <p className="title" href="">{this.toHHMMSS(Math.round(sumPlayedTime / 10))}</p>
                         </div>
                     </div>
                 </nav>
@@ -152,38 +162,38 @@ class ChannelItem extends React.Component {
                     </div>
                 </div>
                 <nav className="level is-mobile">
-                    <div className="level-item has-text-centered">
+                    {badges && badges[0] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">1 month</p>
-                            <img src="https://static-cdn.jtvnw.net/badges/v1/c375d14f-bed6-464d-943a-49b6768ac9ad/2" alt="" />
+                            <img src={badges[0].image_url_2x} alt="" />
                         </div>
-                    </div>
-                    <div className="level-item has-text-centered">
+                    </div>}
+                    {badges && badges[3] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">3 months</p>
-                            <img src="https://static-cdn.jtvnw.net/badges/v1/f8fb3ee8-0f03-45b0-b023-c0e85650ba2f/2" alt="" />
+                            <img src={badges[3].image_url_2x} alt="" />
                         </div>
-                    </div>
-                    <div className="level-item has-text-centered">
+                    </div>}
+                    {badges && badges[6] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">6 months</p>
-                            <img src="https://static-cdn.jtvnw.net/badges/v1/fae953aa-e9f3-463a-b68c-df172dd750a2/2" alt="" />
+                            <img src={badges[6].image_url_2x} alt="" />
                         </div>
-                    </div>
+                    </div>}
                 </nav>
                 <nav className="level is-mobile">
-                    <div className="level-item has-text-centered">
+                    {badges && badges[12] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">12 months</p>
-                            <img src="https://static-cdn.jtvnw.net/badges/v1/7b785413-932a-4a70-ac9e-f2869faf9c47/2" alt="" />
+                            <img src={badges[12].image_url_2x} alt="" />
                         </div>
-                    </div>
-                    <div className="level-item has-text-centered">
+                    </div>}
+                    {badges && badges[24] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">24 months</p>
-                            <img src="https://static-cdn.jtvnw.net/badges/v1/a088a237-1c7a-4e76-9b39-6bc0ce1e297f/2" alt="" />
+                            <img src={badges[24].image_url_2x} alt="" />
                         </div>
-                    </div>
+                    </div>}
                 </nav>
 
                 <hr />

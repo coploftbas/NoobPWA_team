@@ -1,4 +1,4 @@
-// Public function
+// ****************** Public function ******************
 
 // Fetching user by given userName
 // JSON response consist of
@@ -26,27 +26,27 @@ export function fetchUserFollowers(channelId) {
     return fetch(`https://api.twitch.tv/kraken/channels/${channelId}/follows`, { headers }).then(res => res.json());
 }
 
-// Fetch subscribers
-// will take only _total
-// STILL have problems causing from scope auth
-export function fetchUserSubscribers(channelId) {
-    console.log(`[API fetchUserSubscribers] channelId = ${channelId}`);
-    let headers = new Headers({
-        "Accept": `application/vnd.twitchtv.v5+json`,
-        "Client-ID": `l4tlgzjwaa254v4e85h65pj2ojypgg`,
-        "Authorization": `OAuth 0ryuz4kz8smkenjrfg8uzzo2blton3`
-    });
-    return fetch(`https://api.twitch.tv/kraken/channels/${channelId}/subscriptions`, { headers }).then(res => res.json());
-}
-
 // Fetch videos
-// will take only _total
-// might able to get [games, avg length] in here
+// JSON response consist of
+// - _total
+// - length
+// - game
 export function fetchUserVideos(channelId) {
     console.log(`[API fetchUserVideos] channelId = ${channelId}`);
     let headers = new Headers({
         "Accept": `application/vnd.twitchtv.v5+json`,
         "Client-ID": `l4tlgzjwaa254v4e85h65pj2ojypgg`
     });
-    return fetch(`https://api.twitch.tv/kraken/channels/${channelId}/videos/#limit=100`, { headers }).then(res => res.json());
+    return fetch(`https://api.twitch.tv/kraken/channels/${channelId}/videos`, { headers }).then(res => res.json());
+}
+
+// Fetch subscriber badges
+export function fetchUserBadges(channelId) {
+    console.log(`[API fetchUserBadges] channelId = ${channelId}`);
+    let headers = new Headers({
+        "Accept": `application/vnd.twitchtv.v5+json`,
+        "Client-ID": `l4tlgzjwaa254v4e85h65pj2ojypgg`
+    });
+
+    return fetch(`https://badges.twitch.tv/v1/badges/channels/${channelId}/display`, { headers }).then(res => res.json());
 }
