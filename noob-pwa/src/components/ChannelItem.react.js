@@ -3,7 +3,8 @@ import React from 'react';
 import {
     fetchUserFollowers,
     fetchUserVideos,
-    fetchUserBadges
+    fetchUserBadges,
+    //fetchUserEmotes
 } from '../api';
 
 class ChannelItem extends React.Component {
@@ -69,6 +70,10 @@ class ChannelItem extends React.Component {
                 });
             }
         });
+
+        // fetchUserEmotes(uid).then(allEmotes => {
+        //     console.log(allEmotes);
+        // });
 
 
         const userBio = this.props.channelDetail.bio === null ? 'This user has no bio.' : this.props.channelDetail.bio;
@@ -161,7 +166,7 @@ class ChannelItem extends React.Component {
                         <p className="subtitle"></p>
                     </div>
                 </div>
-                <nav className="level is-mobile">
+                {badges && <nav className="level is-mobile">
                     {badges && badges[0] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">1 month</p>
@@ -180,8 +185,8 @@ class ChannelItem extends React.Component {
                             <img src={badges[6].image_url_2x} alt="" />
                         </div>
                     </div>}
-                </nav>
-                <nav className="level is-mobile">
+                </nav>}
+                {badges && badges[12] && <nav className="level is-mobile">
                     {badges && badges[12] && <div className="level-item has-text-centered">
                         <div>
                             <p className="heading">12 months</p>
@@ -194,7 +199,7 @@ class ChannelItem extends React.Component {
                             <img src={badges[24].image_url_2x} alt="" />
                         </div>
                     </div>}
-                </nav>
+                </nav>}
 
                 <hr />
 
