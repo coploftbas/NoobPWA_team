@@ -15,6 +15,6 @@ A Progressive Web Application for getting some basic information about Twitch's 
 * List of games played from 10 most recent videos 
 * Subscriber's badge
 
-You can try it out from ['here'](https://pwa-hack-th-2017-da599.firebaseapp.com/)
+You can try it out from [here](https://pwa-hack-th-2017-da599.firebaseapp.com/)
 
-P.S. This is only a beta version. It might have some huge bugs available. Sorry for that.
+**P.S.** This is only a beta version. It might have some huge bugs available. Sorry for that.
