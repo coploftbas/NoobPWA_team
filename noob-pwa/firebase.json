@@ -1,11 +1,14 @@
 {
   "hosting": {
-    "public": "build",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "rewrites": [ {
+      "source": "**",
+      "destination": "/index.html"
+    }, {
+      "source": "/foo{,/**}",
+      "destination": "/index.html"
+    }, {
+      "source": "!/@(js|css)/**",
+      "destination": "/index.html"
+    } ]
   }
 }
