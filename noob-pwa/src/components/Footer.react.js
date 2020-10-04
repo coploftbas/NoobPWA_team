@@ -7,7 +7,7 @@ class Footer extends React.Component {
                 <div className="container">
                     <div className="content has-text-centered">
                         <p>
-                            © 2017 All rights reserved by <a href="https://github.com/coploftbas">Pipat Waitayaworanart</a>.
+                            © 2020 All rights reserved by <a href="https://github.com/coploftbas">Pipat Waitayaworanart</a>.
                         </p>
                         <p>
                             <a className="icon" href="https://github.com/coploftbas/NoobPWA_team">
