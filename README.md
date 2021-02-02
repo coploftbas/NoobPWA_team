@@ -2,7 +2,7 @@
 
 This is the project for [PWA Online Hackathon](https://pwa.online.hackathon.in.th/) in Thailand.
 
-## iTwitch
+## iTwitch by Pipat Waitayawornart
 
 A Progressive Web Application for getting some basic information about Twitch's streamers.
 
